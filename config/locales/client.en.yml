@@ -1,0 +1,8 @@
+en:
+  admin_js:
+    admin:
+      site_settings:
+        categories:
+          discourse_user_charts: "Discourse User Charts"
+  js:
+    discourse_user_charts:

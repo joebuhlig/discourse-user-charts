@@ -1,0 +1,6 @@
+en:
+  site_settings:
+    user_charts_enabled: 'Show user activity charts on profiles and through bbcodes.'
+    likes_multiplier: "Number to multiply by the count of likes given by a user in a day."
+    posts_multiplier: "Number to multiply by the count of posts created by a user in a day."
+    topics_multiplier: "Number to multiply by the count of topics created by a user in a day."

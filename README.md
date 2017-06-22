@@ -1,0 +1,1 @@
+A plugin to add charts of user activity to a user profile.

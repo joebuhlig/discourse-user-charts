@@ -1,0 +1,15 @@
+plugins:
+  user_charts_enabled:
+    default: true
+    client: true
+
+discourse_user_charts:
+  likes_multiplier:
+    default: 0.1
+    client: true
+  posts_multiplier:
+    default: 1
+    client: true
+  topics_multiplier:
+    default: 2
+    client: true
