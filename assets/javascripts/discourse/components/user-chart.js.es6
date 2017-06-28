@@ -8,7 +8,7 @@ export default Ember.Component.extend({
       var onejan = new Date(this.getFullYear(),0,1);
       var millisecsInDay = 86400000;
       return Math.ceil((((this - onejan) /millisecsInDay) + onejan.getDay()+1)/7);
-  };
+    };
     var data = [];
     for (var j = 0; j < 365; j++){
       var d = new Date();
@@ -33,11 +33,11 @@ export default Ember.Component.extend({
       },
 
       title: {
-          text: 'GitHub Punch card',
+          text: 'User Activity Chart',
       },
 
       subtitle: {
-          text: 'Based on your public commits',
+          text: 'Based on your likes, posts, and topics',
       },
 
       xAxis: {
@@ -46,6 +46,16 @@ export default Ember.Component.extend({
           lineWidth: 0,
           title: {
               text: null,
+          },
+          showFirstLabel: false,
+          showLastLabel: false,
+          labels: {
+            formatter: function(){
+              var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+              var d = new Date();
+              d.setDate(d.getDate() + this.value * 7);
+              return months[d.getMonth()];
+            }
           }
       },
 
@@ -75,8 +85,8 @@ export default Ember.Component.extend({
       
       tooltip: {
           formatter: function() {
-              var val = this.point.z;
-              return val + " commit" + ((val > 1) ? "s" : "");
+              var val = this.point.value;
+              return val;
           }
       },
 
@@ -95,11 +105,8 @@ export default Ember.Component.extend({
     loadScript("http://code.highcharts.com/highcharts.js", { scriptTag: true }).then(() => {
       loadScript("https://code.highcharts.com/modules/heatmap.js", { scriptTag: true }).then(() => {
         loadScript("http://code.highcharts.com/highcharts-more.js", { scriptTag: true }).then(() => {
-          loadScript("http://code.highcharts.com/modules/exporting.js", { scriptTag: true }).then(() => {
-            var chart = this.$().highcharts(options).highcharts();
-            console.log(chart);
-            return chart;
-          });
+          var chart = this.$().highcharts(options).highcharts();
+          return chart;
         });
       });
     });
