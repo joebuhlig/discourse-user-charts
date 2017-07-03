@@ -4,16 +4,21 @@ import loadScript from 'discourse/lib/load-script';
 export default Ember.Component.extend({
   @on('init')
   chart(){
+    var user = this.get('user');
     Date.prototype.getWeek = function() {
       var onejan = new Date(this.getFullYear(),0,1);
       var millisecsInDay = 86400000;
       return Math.ceil((((this - onejan) /millisecsInDay) + onejan.getDay()+1)/7);
     };
     var data = [];
+    var d = new Date();
+    var weekNum = 52;
     for (var j = 0; j < 365; j++){
-      var d = new Date();
-      d.setDate(d.getDate()-j);
-      data.push([d.getWeek(), d.getDay(), Math.floor((Math.random() * 100))])
+      d.setDate(d.getDate() - 1);
+      data.push([weekNum, d.getDay(), user.user_activity_chart_data[j]])
+      if (d.getDay() == 0){
+        weekNum = weekNum -1;
+      }
     }
     var options = {
       chart: {
@@ -47,8 +52,8 @@ export default Ember.Component.extend({
           title: {
               text: null,
           },
-          showFirstLabel: false,
-          showLastLabel: false,
+          showFirstLabel: true,
+          showLastLabel: true,
           labels: {
             formatter: function(){
               var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -76,10 +81,10 @@ export default Ember.Component.extend({
       colorAxis: {
         stops: [
             [0, '#eeeeee'],
-            [0.25, '#c6e48b'],
-            [0.5, '#7bc96f'],
-            [0.75, '#239a3b'],
-            [1, '#196127']
+            [5, '#c6e48b'],
+            [10, '#7bc96f'],
+            [15, '#239a3b'],
+            [20, '#196127']
         ],
         min: 0
       },

@@ -8,13 +8,15 @@ module DiscourseUserCharts
       require_dependency 'user'
       class ::User
         def user_activity_chart_data
-          if self.custom_fields["user_activity_chart_data"]
-            user_activity_chart_data = self.custom_fields["user_activity_chart_data"]
-          else
-            user_activity_chart_data = []
-            for i in 0..365
-              user_activity_chart_data.push(0)
-            end
+          user_activity_chart_data = []
+          likes = JSON.parse(self.custom_fields["user_activity_chart_likes"])["likes"]
+          posts = JSON.parse(self.custom_fields["user_activity_chart_posts"])["posts"]
+          topics = JSON.parse(self.custom_fields["user_activity_chart_topics"])["topics"]
+          for i in 0..364
+            likes_point = (likes[i] * SiteSetting.likes_multiplier) || 0
+            posts_point = (posts[i] * SiteSetting.posts_multiplier) || 0
+            topics_point = (topics[i] * SiteSetting.topics_multiplier) || 0
+            user_activity_chart_data.push(likes_point + posts_point + topics_point)
           end
           user_activity_chart_data
         end
