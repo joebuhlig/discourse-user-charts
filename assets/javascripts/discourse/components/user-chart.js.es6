@@ -70,6 +70,7 @@ export default Ember.Component.extend({
         maxPadding: 0,
         startOnTick: false,
         endOnTick: false,
+        reversed: true
       },
 
       colorAxis: {
@@ -85,7 +86,7 @@ export default Ember.Component.extend({
       
       tooltip: {
           formatter: function() {
-              var val = this.point.value;
+              var val = this.point.value
               return val;
           }
       },
