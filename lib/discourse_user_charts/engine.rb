@@ -9,13 +9,13 @@ module DiscourseUserCharts
       class ::User
         def user_activity_chart_data
           user_activity_chart_data = []
-          likes = JSON.parse(self.custom_fields["user_activity_chart_likes"])["likes"]
-          posts = JSON.parse(self.custom_fields["user_activity_chart_posts"])["posts"]
-          topics = JSON.parse(self.custom_fields["user_activity_chart_topics"])["topics"]
+          likes = self.custom_fields["user_activity_chart_likes"].nil? ? [] : JSON.parse(self.custom_fields["user_activity_chart_likes"])["likes"]
+          posts = self.custom_fields["user_activity_chart_posts"].nil? ? [] : JSON.parse(self.custom_fields["user_activity_chart_posts"])["posts"]
+          topics = self.custom_fields["user_activity_chart_topics"].nil? ? [] : JSON.parse(self.custom_fields["user_activity_chart_topics"])["topics"]
           for i in 0..364
-            likes_point = (likes[i] * SiteSetting.likes_multiplier) || 0
-            posts_point = (posts[i] * SiteSetting.posts_multiplier) || 0
-            topics_point = (topics[i] * SiteSetting.topics_multiplier) || 0
+            likes_point = likes.empty? ? 0 : (likes[i] * SiteSetting.likes_multiplier)
+            posts_point = posts.empty? ? 0 : (posts[i] * SiteSetting.posts_multiplier)
+            topics_point = topics.empty? ? 0 : (topics[i] * SiteSetting.topics_multiplier)
             user_activity_chart_data.push(likes_point + posts_point + topics_point)
           end
           user_activity_chart_data
