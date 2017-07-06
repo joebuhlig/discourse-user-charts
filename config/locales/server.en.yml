@@ -1,6 +1,15 @@
 en:
   site_settings:
     user_charts_enabled: 'Show user activity charts on profiles and through bbcodes.'
-    likes_multiplier: "Number to multiply by the count of likes given by a user in a day."
-    posts_multiplier: "Number to multiply by the count of posts created by a user in a day."
-    topics_multiplier: "Number to multiply by the count of topics created by a user in a day."
+    user_charts_likes_multiplier: "Number to multiply by the count of likes given by a user in a day."
+    user_charts_posts_multiplier: "Number to multiply by the count of posts created by a user in a day."
+    user_charts_topics_multiplier: "Number to multiply by the count of topics created by a user in a day."
+    user_charts_custom_field_one_enabled: "Add another custom field's data to the user chart calculation?"
+    user_charts_custom_field_one_name: 'Name of the custom field to add to the user chart calculation. Data must be a string in this format: {update_time: "time in utc", data:[0,0,0,0]} with the first value in the data array being the value for yesterday.'
+    user_charts_custom_field_one_multiplier: "Number to multiply by the value in your custom field."
+    user_charts_custom_field_two_enabled: "Add another custom field's data to the user chart calculation?"
+    user_charts_custom_field_two_name: 'Name of the custom field to add to the user chart calculation. Data must be a string in this format: {update_time: "time in utc", data:[0,0,0,0]} with the first value in the data array being the value for yesterday.'
+    user_charts_custom_field_two_multiplier: "Number to multiply by the value in your custom field."
+    user_charts_custom_field_three_enabled: "Add another custom field's data to the user chart calculation?"
+    user_charts_custom_field_three_name: 'Name of the custom field to add to the user chart calculation. Data must be a string in this format: {update_time: "time in utc", data:[0,0,0,0]} with the first value in the data array being the value for yesterday.'
+    user_charts_custom_field_three_multiplier: "Number to multiply by the value in your custom field."

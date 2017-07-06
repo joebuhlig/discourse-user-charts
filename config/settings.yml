@@ -4,12 +4,39 @@ plugins:
     client: true
 
 discourse_user_charts:
-  likes_multiplier:
+  user_charts_likes_multiplier:
     default: 0.1
     client: true
-  posts_multiplier:
+  user_charts_posts_multiplier:
     default: 1
     client: true
-  topics_multiplier:
+  user_charts_topics_multiplier:
     default: 2
+    client: true
+  user_charts_custom_field_one_enabled:
+    default: false
+    client: true
+  user_charts_custom_field_one_name:
+    default: ""
+    client: true
+  user_charts_custom_field_one_multiplier:
+    default: 1
+    client: true
+  user_charts_custom_field_two_enabled:
+    default: false
+    client: true
+  user_charts_custom_field_two_name:
+    default: ""
+    client: true
+  user_charts_custom_field_two_multiplier:
+    default: 1
+    client: true
+  user_charts_custom_field_three_enabled:
+    default: false
+    client: true
+  user_charts_custom_field_three_name:
+    default: ""
+    client: true
+  user_charts_custom_field_three_multiplier:
+    default: 1
     client: true
