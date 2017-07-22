@@ -12,9 +12,12 @@ module DiscourseUserCharts
           likes = self.custom_fields["user_activity_chart_likes"].nil? ? [] : JSON.parse(self.custom_fields["user_activity_chart_likes"])["likes"]
           posts = self.custom_fields["user_activity_chart_posts"].nil? ? [] : JSON.parse(self.custom_fields["user_activity_chart_posts"])["posts"]
           topics = self.custom_fields["user_activity_chart_topics"].nil? ? [] : JSON.parse(self.custom_fields["user_activity_chart_topics"])["topics"]
-          custom_field_one = self.custom_fields[SiteSetting.user_charts_custom_field_one_name].nil? ? [] : JSON.parse(self.custom_fields[SiteSetting.user_charts_custom_field_one_name])["data"]
-          custom_field_two = self.custom_fields[SiteSetting.user_charts_custom_field_two_name].nil? ? [] : JSON.parse(self.custom_fields[SiteSetting.user_charts_custom_field_two_name])["data"]
-          custom_field_three = self.custom_fields[SiteSetting.user_charts_custom_field_three_name].nil? ? [] : JSON.parse(self.custom_fields[SiteSetting.user_charts_custom_field_three_name])["data"]
+          user_field_one = UserField.find_by(:name => SiteSetting.user_charts_custom_field_one_name)
+          user_field_two = UserField.find_by(:name => SiteSetting.user_charts_custom_field_two_name)
+          user_field_three = UserField.find_by(:name => SiteSetting.user_charts_custom_field_three_name)
+          custom_field_one = user_field_one.nil? ? [] : JSON.parse(self.user_fields[user_field_one.id.to_s])["data"]
+          custom_field_two = user_field_two.nil? ? [] : JSON.parse(self.user_fields[user_field_two.id.to_s])["data"]
+          custom_field_three = user_field_three.nil? ? [] : JSON.parse(self.user_fields[user_field_three.id.to_s])["data"]
 
           for i in 0..364
             likes_point = likes.empty? ? 0 : (likes[i] * SiteSetting.user_charts_likes_multiplier)
@@ -22,15 +25,15 @@ module DiscourseUserCharts
             topics_point = topics.empty? ? 0 : (topics[i] * SiteSetting.user_charts_topics_multiplier)
             data_point = likes_point + posts_point + topics_point
             if SiteSetting.user_charts_custom_field_one_enabled
-              custom_field_one_point = custom_field_one.empty? ? 0 : (custom_field_one[i] * SiteSetting.user_charts_custom_field_one_multiplier)
+              custom_field_one_point = custom_field_one[i].blank? ? 0 : (custom_field_one[i] * SiteSetting.user_charts_custom_field_one_multiplier)
               data_point += custom_field_one_point
             end
             if SiteSetting.user_charts_custom_field_two_enabled
-              custom_field_two_point = custom_field_two.empty? ? 0 : (custom_field_two[i] * SiteSetting.user_charts_custom_field_two_multiplier)
+              custom_field_two_point = custom_field_two[i].blank? ? 0 : (custom_field_two[i] * SiteSetting.user_charts_custom_field_two_multiplier)
               data_point += custom_field_two_point
             end
             if SiteSetting.user_charts_custom_field_three_enabled
-              custom_field_three_point = custom_field_three.empty? ? 0 : (custom_field_three[i] * SiteSetting.user_charts_custom_field_three_multiplier)
+              custom_field_three_point = custom_field_three[i].blank? ? 0 : (custom_field_three[i] * SiteSetting.user_charts_custom_field_three_multiplier)
               data_point += custom_field_three_point
             end
             user_activity_chart_data.push(data_point)
