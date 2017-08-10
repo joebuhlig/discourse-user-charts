@@ -9,15 +9,67 @@ module DiscourseUserCharts
       class ::User
         def user_activity_chart_data
           user_activity_chart_data = []
-          likes = self.custom_fields["user_activity_chart_likes"].nil? ? [] : JSON.parse(self.custom_fields["user_activity_chart_likes"])["likes"]
-          posts = self.custom_fields["user_activity_chart_posts"].nil? ? [] : JSON.parse(self.custom_fields["user_activity_chart_posts"])["posts"]
-          topics = self.custom_fields["user_activity_chart_topics"].nil? ? [] : JSON.parse(self.custom_fields["user_activity_chart_topics"])["topics"]
+          today = Time.now.utc.beginning_of_day.to_date
+
+          likes_field = self.custom_fields["user_activity_chart_likes"].nil? ? [] : JSON.parse(self.custom_fields["user_activity_chart_likes"])
+          likes = likes_field["likes"]
+          likes_date = likes_field["update_time"]
+          likes_diff = (today - Date.parse(likes_date)).to_int
+          if likes_diff > 0
+            for i in 0..likes_diff
+              likes.unshift(0)
+            end
+          end
+
+          posts_field = self.custom_fields["user_activity_chart_posts"].nil? ? [] : JSON.parse(self.custom_fields["user_activity_chart_posts"])
+          posts = posts_field["posts"]
+          posts_date = posts_field["update_time"]
+          posts_diff = (today - Date.parse(posts_date)).to_int
+
+          topics_field = self.custom_fields["user_activity_chart_topics"].nil? ? [] : JSON.parse(self.custom_fields["user_activity_chart_topics"])
+          topics = topics_field["topics"]
+          topics_date = topics_field["update_time"]
+          topics_diff = (today - Date.parse(topics_date)).to_int
+
           user_field_one = UserField.find_by(:name => SiteSetting.user_charts_custom_field_one_name)
           user_field_two = UserField.find_by(:name => SiteSetting.user_charts_custom_field_two_name)
           user_field_three = UserField.find_by(:name => SiteSetting.user_charts_custom_field_three_name)
-          custom_field_one = user_field_one.nil? ? [] : JSON.parse(self.user_fields[user_field_one.id.to_s])["data"]
-          custom_field_two = user_field_two.nil? ? [] : JSON.parse(self.user_fields[user_field_two.id.to_s])["data"]
-          custom_field_three = user_field_three.nil? ? [] : JSON.parse(self.user_fields[user_field_three.id.to_s])["data"]
+
+          if SiteSetting.user_charts_custom_field_one_enabled
+            custom_field_one_field = user_field_one.nil? ? [] : JSON.parse(self.user_fields[user_field_one.id.to_s])
+            custom_field_one = user_field_one.nil? ? [] : custom_field_one_field["data"]
+            custom_field_one_date = user_field_one.nil? ? [] : custom_field_one_field["update_time"]
+            custom_field_one_diff = (today - Date.parse(custom_field_one_date)).to_int
+            if custom_field_one_diff > 0
+              for i in 0..custom_field_one_diff
+                custom_field_one.unshift(0)
+              end
+            end
+          end
+
+          if SiteSetting.user_charts_custom_field_two_enabled
+            custom_field_two_field = user_field_two.nil? ? [] : JSON.parse(self.user_fields[user_field_two.id.to_s])
+            custom_field_two = user_field_two.nil? ? [] : custom_field_two_field["data"]
+            custom_field_two_date = user_field_two.nil? ? [] : custom_field_two_field["update_time"]
+            custom_field_two_diff = (today - Date.parse(custom_field_two_date)).to_int
+            if custom_field_two_diff > 0
+              for i in 0..custom_field_two_diff
+                custom_field_two.unshift(0)
+              end
+            end
+          end
+
+          if SiteSetting.user_charts_custom_field_three_enabled
+            custom_field_three_field = user_field_three.nil? ? [] : JSON.parse(self.user_fields[user_field_three.id.to_s])
+            custom_field_three = user_field_three.nil? ? [] : custom_field_three_field["data"]
+            custom_field_three_date = user_field_three.nil? ? [] : custom_field_three_field["update_time"]
+            custom_field_three_diff = (today - Date.parse(custom_field_three_date)).to_int
+            if custom_field_three_diff > 0
+              for i in 0..custom_field_three_diff
+                custom_field_three.unshift(0)
+              end
+            end
+          end
 
           for i in 0..364
             likes_point = likes.empty? ? 0 : (likes[i] * SiteSetting.user_charts_likes_multiplier)
