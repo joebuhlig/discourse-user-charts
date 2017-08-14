@@ -25,11 +25,21 @@ module DiscourseUserCharts
           posts = posts_field["posts"]
           posts_date = posts_field["update_time"]
           posts_diff = (today - Date.parse(posts_date)).to_int
+          if posts_diff > 0
+            for i in 0..posts_diff
+              posts.unshift(0)
+            end
+          end
 
           topics_field = self.custom_fields["user_activity_chart_topics"].nil? ? [] : JSON.parse(self.custom_fields["user_activity_chart_topics"])
           topics = topics_field["topics"]
           topics_date = topics_field["update_time"]
           topics_diff = (today - Date.parse(topics_date)).to_int
+          if topics_diff > 0
+            for i in 0..topics_diff
+              topics.unshift(0)
+            end
+          end
 
           user_field_one = UserField.find_by(:name => SiteSetting.user_charts_custom_field_one_name)
           user_field_two = UserField.find_by(:name => SiteSetting.user_charts_custom_field_two_name)
